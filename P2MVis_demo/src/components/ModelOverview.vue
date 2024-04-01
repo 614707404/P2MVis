@@ -1,12 +1,13 @@
 <template>
     <div class="modeloverview">
         <!-- <div id="cav"> -->
+        <!-- <div id="modeloverview-title">MODEL OVERVIEW</div> -->
         <div id="CNN_group">
             <div id="inputimg-title">Input Image</div>
             <div id="inputimg">
                 <img src="input.png" style="height: 100%; width: 100%;" :key="this.renderKey" />
             </div>
-            <CNNContainer id="CNNcontainer" style="z-index: 11;"></CNNContainer>
+            <CNNContainer id="CNNcontainer" style="z-index: 11;" v-show="editVisiable"></CNNContainer>
             <div id="CNN_part">
                 <!-- <el-popover ref="popover" placement="right" title="标题" width="200" trigger="focus"
                     content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
@@ -18,8 +19,8 @@
                 <div id="feature1" class="feature" @click="featureClick_1"></div>
                 <div id="feature2" class="feature" @click="featureClick_2"></div>
                 <div id="feature3" class="feature" @click="featureClick_3"></div>
-                <div id="legend" @click="featureClick_3"></div>
-                <div id="CNN_func">extract perceptual feature</div>
+                <!-- <div id="legend"></div> -->
+                <div id="CNN_func" v-show="editVisiable">extract perceptual feature</div>
                 <!-- <div id="CNN-layer-1" class="CNN-layers">conv3_3</div>
                 <div id="CNN-layer-2" class="CNN-layers">conv4_3</div>
                 <div id="CNN-layer-3" class="CNN-layers">conv5_3</div> -->
@@ -75,7 +76,7 @@
 
                 <path d="M 60 35
                         C 60 27, 48 21, 74 22" stroke="gray" fill="none" marker-start="url(#arrow-small)"
-                    stroke-width="0.7" stroke-dasharray="3,1" />
+                    stroke-width="0.7" stroke-dasharray="3,1" v-show="editVisiable" />
                 <!-- 带标记的曲线-->
                 <!-- <path
                     d="M 110 10
@@ -123,29 +124,30 @@
             <div id="initmodel">
                 <img src="orig.png" style="height: 100%; width: 100%;" />
             </div>
-            <InitModel id="InitModel"></InitModel>
+            <div id="InitialModel">Initial Model</div>
+            <!-- <InitModel id="InitModel" v-show="editVisiable"></InitModel> -->
             <div id="GCN_part">
                 <div id="GCN_title">Mesh Deformation Blocks</div>
-                <div id="unpooling-tag-1" class="unpooling-tags">Unpooling</div>
-                <div id="unpooling-tag-2" class="unpooling-tags">Unpooling</div>
+                <div id="unpooling-tag-1" class="unpooling-tags" v-show="editVisiable">Unpooling</div>
+                <div id="unpooling-tag-2" class="unpooling-tags" v-show="editVisiable">Unpooling</div>
                 <div id="vertices-tag-1" class="vertices-tags">156 vertices</div>
                 <div id="vertices-tag-2" class="vertices-tags">628 vertices</div>
                 <div id="vertices-tag-3" class="vertices-tags">2466 vertices</div>
                 <div id="model1" class="model" @click="modelClick_1">
-                    <ThreeModel :objPath="'predict1.obj'" :key="renderKey"></ThreeModel>
+                    <ThreeModel :objPath="'predict1.obj'" :key="this.renderKey"></ThreeModel>
                 </div>
                 <div id="model2" class="model" @click="modelClick_2">
-                    <ThreeModel :objPath="'predict2.obj'" :key="renderKey"></ThreeModel>
+                    <ThreeModel :objPath="'predict2.obj'" :key="this.renderKey"></ThreeModel>
                 </div>
                 <div id="model3" class="model" @click="modelClick_3">
-                    <ThreeModel :objPath="'predict3.obj'" :key="renderKey"></ThreeModel>
+                    <ThreeModel :objPath="'predict3.obj'" :key="this.renderKey"></ThreeModel>
                 </div>
-                <div id="loss">
+                <div id="loss" v-show="editVisiable">
                     <LossContainer id="losscontainer"></LossContainer>
                     <CharmerContainer id="charmercontainer"></CharmerContainer>
                     <NormalContainer id="normalcontainer"></NormalContainer>
                 </div>
-                <div id="opti-learning">
+                <div id="opti-learning" v-show="editVisiable">
                     <Optimizer id="optimizer"></Optimizer>
                     <LearningRate id="learningrate"></LearningRate>
                 </div>
@@ -166,7 +168,7 @@
 
                 <!-- 带标记的线 -->
                 <!-- stroke-dasharray="1,1" 虚线-->
-                <line x1="50.5" y1="56" x2="85" y2="56" stroke="#4f900d"
+                <line x1="44" y1="56" x2="85" y2="56" stroke="#4f900d"
                     :marker-end="(isClicked1 || isClicked2 || isClicked3) ? 'url(#arrow1)' : 'url(#arrowGray1)'"
                     class="grayed-out-2" />
                 <line x1="140" y1="56" x2="127.5" y2="56" stroke="#4f900d"
@@ -718,7 +720,7 @@ export default {
                 .style("text-anchor", "start") // 文本对齐方式
                 .attr("dy", "0.35em") // 垂直对齐
                 .style("font-family", "sans-serif") // 字体
-                .style("font-size", "18px")
+                .style("font-size", "35px")
                 .style("font-weight", "bolder")
                 .style("font-style", "italic")
                 .style("color", "#004949")
@@ -904,6 +906,13 @@ export default {
     height: 1000px;
     position: relative;
 
+    #modeloverview-title {
+        position: absolute;
+        left: -100px;
+        font-size: 50px;
+
+    }
+
     // overflow: hidden; /* 如果组件超出容器，则隐藏其余部分 */
     // position: relative;
     // #cav{
@@ -1057,16 +1066,16 @@ export default {
 
         #inputimg-title {
             position: absolute;
-            top: 100px;
+            top: 70px;
             left: 70px;
-            color: #205596;
+            // color: #205596;
             /* 文字颜色为蓝色 */
             font-family: Arial;
             /* 字体为Arial */
             text-align: center;
             /* 文本居中对齐 */
 
-            font-size: 18px;
+            font-size: 35px;
             font-weight: bolder;
         }
 
@@ -1105,17 +1114,17 @@ export default {
 
             #feature1 {
                 left: 50px;
-                z-index: 5;
+                z-index: 50;
             }
 
             #feature2 {
                 left: 325px;
-                z-index: 5;
+                z-index: 50;
             }
 
             #feature3 {
                 left: 600px;
-                z-index: 5;
+                z-index: 50;
             }
 
             #legend {
@@ -1125,14 +1134,14 @@ export default {
             }
 
             #CNN_title {
-                color: #205596;
+                // color: #205596;
                 /* 文字颜色为蓝色 */
                 font-family: Arial;
                 /* 字体为Arial */
                 text-align: center;
                 /* 文本居中对齐 */
                 margin-top: 5px;
-                font-size: 30px;
+                font-size: 40px;
                 font-weight: bolder;
                 z-index: 100;
             }
@@ -1193,14 +1202,18 @@ export default {
         #pooling {
             border-width: 3px;
             border-style: solid;
-            border-color: #fbd28e;
+            // border-color: #fbd28e;
+            border-color: #000;
+
             border-radius: 5px;
             position: absolute;
             top: 100px;
             left: 606px;
             height: 98px;
             width: 350px;
-            background-color: #ffedd1;
+            // background-color: #ffedd1;
+            // background-color: #ffedd1;
+
             display: flex;
             /* 设置为flex布局 */
             justify-content: center;
@@ -1208,7 +1221,7 @@ export default {
             align-items: center;
 
             #pooling_title {
-                color: #f49907;
+                // color: #f49907;
                 /* 文字颜色为蓝色 */
                 font-family: Arial;
                 /* 字体为Arial */
@@ -1288,13 +1301,13 @@ export default {
         }
 
         .vertices-tags {
-            color: #397200;
+            // color: #397200;
             /* 文字颜色为蓝色 */
             font-family: Arial;
             /* 字体为Arial */
             text-align: center;
             /* 文本居中对齐 */
-            font-size: 18px;
+            font-size: 25px;
             font-weight: bolder;
             z-index: 51;
         }
@@ -1323,8 +1336,20 @@ export default {
         #InitModel {
             position: absolute;
             top: 170px;
-            left: 100px;
+            left: 70px;
             z-index: 11;
+        }
+
+        #InitialModel {
+            position: absolute;
+            top: 150px;
+            left: 70px;
+            z-index: 11;
+            display: inline-block;
+            font-size: 35px;
+            font-weight: bolder;
+            width: auto;
+            white-space: nowrap;
         }
 
         #initmodel {
@@ -1337,7 +1362,7 @@ export default {
             background-color: antiquewhite;
             position: absolute;
             top: 200px;
-            left: 100px;
+            left: 70px;
         }
 
 
@@ -1423,14 +1448,14 @@ export default {
             }
 
             #GCN_title {
-                color: #397200;
+                // color: #397200;
                 /* 文字颜色为蓝色 */
                 font-family: Arial;
                 /* 字体为Arial */
                 text-align: center;
                 /* 文本居中对齐 */
                 margin-top: 235px;
-                font-size: 30px;
+                font-size: 45px;
                 font-weight: bolder;
             }
         }
@@ -1546,6 +1571,9 @@ export default {
         margin-bottom: 0;
         white-space: nowrap;
     }
+
+
+
 
     // }
 }

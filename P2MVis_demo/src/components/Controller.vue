@@ -52,13 +52,13 @@ export default {
             this.$emit('start-change', !this.isPlaying);
             this.isPlaying = !this.isPlaying;
             // console.log(this.isPlaying)/
-            if (this.isPlaying) {
-                // 当isPlaying为true，启动定时器自增iterationCount
-                this.startIncrementing();
-            } else {
-                // 当isPlaying为false，停止定时器
-                this.stopIncrementing();
-            }
+            // if (this.isPlaying) {
+            //     // 当isPlaying为true，启动定时器自增iterationCount
+            //     this.startIncrementing();
+            // } else {
+            //     // 当isPlaying为false，停止定时器
+            //     this.stopIncrementing();
+            // }
             // 你的 Express 服务器端的 URL，可能需要进行修改
             let url = 'http://localhost:3000/play_pause';
 
@@ -77,20 +77,20 @@ export default {
             console.log("updateVisiable")
             this.$emit('updateVisiable');
         },
-        startIncrementing() {
-            // 每秒自增iterationCount
-            this.intervalId = setInterval(() => {
-                const newCount = (parseInt(this.iterationCount) + 1).toString();
-                this.$emit('update:iterationCount', newCount);
-            }, 10); // 1000毫秒（1秒）间隔
-        },
-        stopIncrementing() {
-            // 停止定时器
-            if (this.intervalId !== null) {
-                clearInterval(this.intervalId);
-                this.intervalId = null;
-            }
-        },
+        // startIncrementing() {
+        //     // 每秒自增iterationCount
+        //     this.intervalId = setInterval(() => {
+        //         const newCount = (parseInt(this.iterationCount) + 1).toString();
+        //         this.$emit('update:iterationCount', newCount);
+        //     }, 10); // 1000毫秒（1秒）间隔
+        // },
+        // stopIncrementing() {
+        //     // 停止定时器
+        //     if (this.intervalId !== null) {
+        //         clearInterval(this.intervalId);
+        //         this.intervalId = null;
+        //     }
+        // },
     },
     watch: {
         selected(newVal) {

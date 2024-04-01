@@ -1,6 +1,9 @@
 <template>
 	<div class="chat-box">
-		<img class="chat-button" @click="getChat" src="plus.svg" />
+		<img class="chat-button" @click="getChat" src="talk.svg" />
+		<!-- <div id="Chat-title" @click="getChat"> Any questions? Click here</div> -->
+		<div id="Chat-title" @click="getChat">Q&A</div>
+
 		<vue-advanced-chat v-show="isOpen" class="chat" :current-user-id="currentUserId" :rooms="JSON.stringify(rooms)"
 			:rooms-loaded="true" :messages="JSON.stringify(messages)" :messages-loaded="messagesLoaded"
 			:single-room="true" @send-message="sendMessage($event.detail[0])"
@@ -162,24 +165,37 @@ body {
 	font-family: 'Quicksand', sans-serif;
 }
 
+#Chat-title {
+	position: absolute;
+	// top: 65px;
+	// left: 237px;
+	top: 32px;
+	left: 283px;
+	width: 120px;
+	font-size: 25px;
+}
+
 .chat-box {
 	position: relative;
 
 
 	.chat {
 		position: absolute;
-		width: 250px !important;
+		width: 500px !important;
 		/* 新的宽度 */
-
-		/* 新的高度 */
+		left: -300px
+			/* 新的高度 */
 	}
 
 	.chat-button {
 		position: absolute;
+
 		height: 50px;
 		width: 50px;
-		left: 250px;
-		top: 0px;
+		// left: 230px;
+		// top: 20px;
+		left: 230px;
+		top: 28px;
 	}
 }
 </style>

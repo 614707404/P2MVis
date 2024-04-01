@@ -1,7 +1,7 @@
 <template>
     <div id="architecture-container" @click="toggleDropdown">
         <div id="seed-control-container" class="hyperparameter">
-            <div id="seed-control-text">Initial Model:</div>
+            <div id="seed-control-text">:</div>
             <div id="seed-control-dropdown-container" class="custom-select hyperparameter-dropdown-container">
                 <div id="seed-dropdown-box" :style="{ color: dropdownBoxColor, stroke: dropdownBoxStroke }">
                     <div id="seed-dropdown-box-text">{{ seed }}</div>
@@ -25,7 +25,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     data() {
@@ -62,7 +62,7 @@ export default {
     // 可能会有其他的生命周期钩子或计算属性
 };
 </script>
-  
+
 <style scoped>
 /* 这里将会添加组件的样式 */
 /* hyperparameter */
@@ -193,4 +193,3 @@ export default {
     background-color: #b5e586;
 }
 </style>
-  

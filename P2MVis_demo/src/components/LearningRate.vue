@@ -14,8 +14,12 @@
                 <div id="seed-dropdown-deco" :style="{ opacity: dropdownDecoOpacity }"></div>
                 <div id="seed-dropdown-options-container" v-show="seedDropdownExpanded">
                     <div id="seed-dropdown-desc"></div>
-                    <p id="seed-dropdown-option-1" class="seed-dropdown-options" @click="seedChanged(1)">0.001</p>
-                    <p id="seed-dropdown-option-2" class="seed-dropdown-options" @click="seedChanged(2)">0.002</p>
+                    <p id="seed-dropdown-option-1" class="seed-dropdown-options" @click="seedChanged(1)">0.00001</p>
+                    <p id="seed-dropdown-option-2" class="seed-dropdown-options" @click="seedChanged(2)">0.1</p>
+                    <p id="seed-dropdown-option-1" class="seed-dropdown-options" @click="seedChanged(3)">0.0001</p>
+                    <p id="seed-dropdown-option-2" class="seed-dropdown-options" @click="seedChanged(4)">0.002</p>
+                    <p id="seed-dropdown-option-1" class="seed-dropdown-options" @click="seedChanged(5)">0.2</p>
+                    <p id="seed-dropdown-option-2" class="seed-dropdown-options" @click="seedChanged(6)">0.0002</p>
                     <!-- <p v-for="option in seedOptions" :key="option" :id="`seed-dropdown-option-${option}`"
                         class="seed-dropdown-options" @click="seedChanged(option)">
                         {{ option }}
@@ -25,12 +29,12 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     data() {
         return {
-            seed: '0.001', // 初始化种子值
+            seed: '0.00001', // 初始化种子值
             seedOptions: [1, 2, 3], // 种子选项
             seedDropdownExpanded: false, // 控制下拉菜单的展开和收起
             compare: false, // 比较状态
@@ -50,9 +54,9 @@ export default {
 
         seedChanged(option) {
             if (option == 1) {
-                this.seed = "0.001";
+                this.seed = "0.00001";
             } else {
-                this.seed = "0.002";
+                this.seed = "0.001";
             }
 
             // 种子值更改时的逻辑
@@ -62,7 +66,7 @@ export default {
     // 可能会有其他的生命周期钩子或计算属性
 };
 </script>
-  
+
 <style scoped>
 /* 这里将会添加组件的样式 */
 /* hyperparameter */
@@ -193,4 +197,3 @@ export default {
     background-color: #b5e586;
 }
 </style>
-  

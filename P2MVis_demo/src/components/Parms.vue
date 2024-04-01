@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import iconSvg from '/Users/daiweitao/UMG/P2MVis_SC/P2MVis_demo/src/assets/normal.svg'; // '@/assets/icon.svg' 应该是 SVG 文件的路径
-import iconSvg_1 from '/Users/daiweitao/UMG/P2MVis_SC/P2MVis_demo/src/assets/cross.svg';
+import iconSvg from '/home/giga/Desktop/davistao/the_lab/the_lab/src/assets/normal.svg'; // '@/assets/icon.svg' 应该是 SVG 文件的路径
+import iconSvg_1 from '/home/giga/Desktop/davistao/the_lab/the_lab/src/assets/cross.svg';
 export default {
     data() {
         return {
             tableData: [{
                 id: 'Learning Rate',
-                name: '0.1',
+                name: '0.00001',
                 amount1: '',
-                svg: iconSvg_1,
+                svg: iconSvg,
             }, {
                 id: 'Chamfer loss',
                 name: '1',
@@ -41,10 +41,10 @@ export default {
                 svg: iconSvg,
             }, {
                 id: 'Regularization',
-                name: '0',
+                name: '1',
                 amount1: '',
                 amount2: 'Regularization',
-                svg: iconSvg_1,
+                svg: iconSvg,
             }, {
                 id: '2D CNN',
                 name: 'VGG-16',

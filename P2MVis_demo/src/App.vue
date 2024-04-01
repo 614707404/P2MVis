@@ -62,10 +62,12 @@
                 <!-- <div class="bottom-section"> -->
                 <!-- <div id="control-part"> -->
                 <div class="left-section">
+                    <div id=model-overview-title>Model Overview</div>
                     <ModelOverview id="model-overview" :editVisiable="editVisiable" v-bind:img_feat_data="img_feat_data"
-                        @change_path="change_path" :isStarted="isStarted"></ModelOverview>
+                        :renderKey="renderKey" @change_path="change_path" :isStarted="isStarted"></ModelOverview>
                 </div>
-                <div class="middle-section">
+                <div class=" middle-section">
+                    <div id="visual-three-title">Cross-dimensional Interaction View</div>
                     <div id="visual-three">
                         <Visualization id="feature-visual" ref="visualization" v-bind:dataset="dataset"
                             v-bind:dimensions="dimensions" v-on:hover="updateHoverPixelVector"
@@ -83,9 +85,11 @@
 
                 <div class="right-section">
                     <Controller @start-change="handleStartChange" :iterationCount="iterationCount"
-                        @update:iterationCount="iterationCount = $event"></Controller>
+                        @update:iterationCount="iterationCount = $event" @updateVisiable="toggleModelParameter">
+                    </Controller>
                     <Inputimage></Inputimage>
                     <Parms></Parms>
+
                     <Chat class="chat-box"> </Chat>
                     <!-- <button class="btn btn-primary" @click="showInitModal">Start Application</button> -->
                     <!-- <LineChart :data="chartData"></LineChart> -->
@@ -95,6 +99,7 @@
                 <!-- </div> -->
             </div>
             <div class="lower-bottom-section">
+                <div id="Chart-title">Loss Chart</div>
                 <!-- <LineChart class="linechart" :datasets="yData_2" :xData="xData"></LineChart> -->
                 <LineChart class="linechart" :datasets="yData_2" :xData="xData"></LineChart>
             </div>
@@ -216,7 +221,7 @@ export default {
         iterationCount(newVal, oldVal) {
             // newVal是新值，oldVal是旧值
             console.log(`iterationCount changed from ${oldVal} to ${newVal}`);
-            this.onIterationCountChanged(newVal);
+            // this.onIterationCountChanged(newVal);
         },
         parsedData(newVal, oldVal) {
             // newVal是新值，oldVal是旧值
@@ -241,8 +246,10 @@ export default {
             // 例如，可以在这里发送请求、更新UI等
             // console.log(`Handling iterationCount change: ${newCount}`, this.parsedData[this.xData - 1]);
 
-            this.xData.push(parseInt(this.iterationCount));
+
             let dataset = this.yData_2.find(d => d.name === "Current Loss");
+            if (parseInt(this.parsedData[parseInt(this.iterationCount) - 1].iterloss === 0))
+                return
             if (dataset) {
                 dataset.data.push(parseInt(this.parsedData[parseInt(this.iterationCount) - 1].iterloss));
             }
@@ -277,9 +284,10 @@ export default {
             if (dataset) {
                 dataset.data.push(parseInt(this.parsedData[parseInt(this.iterationCount) - 1].l_loss));
             }
+            this.xData.push(parseInt(this.iterationCount));
             // 具体的处理逻辑
-            console.log(this.xData)
-            console.log(this.yData_2)
+            // console.log(this.xData)
+            // console.log(this.yData_2)
         },
         handleStartChange(newValue) {
             this.isStarted = newValue;
@@ -433,7 +441,7 @@ export default {
                 let response_json = await fetch("img_feat_json.json");
                 this.img_feat_data = await response_json.json();
                 this.handleDataset("C5.8.zip")
-
+                // this.renderKey++;
                 // const fileData = await readFileAsync('/home/giga/Desktop/davistao/p2m_tf2/Pixel2Mesh-Tensorflow2/C1.8.zip');
                 // console.log(fileData);
                 // 此处处理 fileData
@@ -443,7 +451,7 @@ export default {
         }
     },
     mounted() {
-        this.loadData();
+        // this.loadData();
 
         this.socket = new WebSocket('ws://localhost:8080');
 
@@ -464,46 +472,49 @@ export default {
             //         y6: parsedData.l_loss,
             //         y7: parsedData.m_loss})
             // console.log('Received message from server: ' + event.data);
-            this.xData.push(parseInt(parsedData.message));
-            let dataset = this.yData_2.find(d => d.name === "Current Loss");
-            if (dataset) {
-                dataset.data.push(parsedData.number1);
-            }
-
-            dataset = this.yData_2.find(d => d.name === "Average Loss");
-            if (dataset) {
-                dataset.data.push(parsedData.number2);
-            }
-
-
-            dataset = this.yData_2.find(d => d.name === "Chamfer Loss");
-            if (dataset) {
-                dataset.data.push(parsedData.p_loss);
-            }
-
-            dataset = this.yData_2.find(d => d.name === "Edge Regularization");
-            if (dataset) {
-                dataset.data.push(parsedData.e_loss);
-            }
-
-            dataset = this.yData_2.find(d => d.name === "Normal Loss");
-            if (dataset) {
-                dataset.data.push(parsedData.n_loss);
-            }
-
-            // dataset = this.yData_3.find(d => d.name === "m_loss");
-            // if (dataset) {
-            //     dataset.data.push(parsedData.m_loss);
-            // }
-
-            dataset = this.yData_2.find(d => d.name === "Laplacian Regularization");
-            if (dataset) {
-                dataset.data.push(parsedData.l_loss);
-            }
-
             if (parsedData.img_feat_json == 'T') {
                 console.log("img_feat_json")
                 this.handleFileLoadSignal()
+            } else {
+
+
+                this.xData.push(parseInt(parsedData.message));
+                let dataset = this.yData_2.find(d => d.name === "Current Loss");
+                if (dataset) {
+                    dataset.data.push(parsedData.number1);
+                }
+
+                dataset = this.yData_2.find(d => d.name === "Average Loss");
+                if (dataset) {
+                    dataset.data.push(parsedData.number2);
+                }
+
+
+                dataset = this.yData_2.find(d => d.name === "Chamfer Loss");
+                if (dataset) {
+                    dataset.data.push(parsedData.p_loss);
+                }
+
+                dataset = this.yData_2.find(d => d.name === "Edge Regularization");
+                if (dataset) {
+                    dataset.data.push(parsedData.e_loss);
+                }
+
+                dataset = this.yData_2.find(d => d.name === "Normal Loss");
+                if (dataset) {
+                    dataset.data.push(parsedData.n_loss);
+                }
+
+                // dataset = this.yData_3.find(d => d.name === "m_loss");
+                // if (dataset) {
+                //     dataset.data.push(parsedData.m_loss);
+                // }
+
+                dataset = this.yData_2.find(d => d.name === "Laplacian Regularization");
+                if (dataset) {
+                    dataset.data.push(parsedData.l_loss);
+                }
+
             }
         };
 
@@ -674,6 +685,16 @@ body,
                 /* 如果组件超出容器，则隐藏其余部分 */
                 position: relative;
 
+                #model-overview-title {
+                    font-size: 17px;
+                    font-weight: bolder;
+                    position: absolute;
+                    /* 使其脱离正常文档流 */
+                    top: 5px;
+                    left: 20px;
+                    z-index: 100;
+                }
+
                 #model-overview {
                     transform-origin: top left;
                     /* 设置缩放的基点 */
@@ -682,7 +703,7 @@ body,
                     position: absolute;
                     /* 使其脱离正常文档流 */
                     top: 10px;
-                    left: 80px;
+                    left: 100px;
                 }
             }
 
@@ -702,11 +723,24 @@ body,
                 // border-width: 3px;
                 // border-style: solid;
                 // border-radius: 5px;
+                #visual-three-title {
+                    font-size: 17px;
+                    font-weight: bolder;
+                    margin-top: 5px; // position: absolute;
+                    margin-left: 5px;
+                    // top: 2px;
+                    // left: 2px;
+                    // z-index: 100;
+                }
+
                 #visual-three {
                     width: 100%;
                     height: 100%;
-
                     position: relative;
+                    transform-origin: top left;
+                    /* 设置缩放的基点 */
+                    transform: scale(0.85);
+
                     // background-color: #ffedd1;
                     // border-color: #fbd28e;
                     // border-width: 3px;
@@ -718,7 +752,7 @@ body,
                         width: 250px;
                         height: 250px;
                         top: 30px;
-                        left: 30px;
+                        left: 50px;
                         // background-color: #300da4;
                     }
 
@@ -727,7 +761,7 @@ body,
                         width: 250px;
                         height: 250px;
                         top: 300px;
-                        left: 30px;
+                        left: 50px;
                         background-color: #eee;
                     }
                 }
@@ -741,9 +775,16 @@ body,
                 // border-left: #ddd;
                 .chat-box {
                     position: absolute;
-                    top: 120px;
+                    top: 100px;
                     z-index: 11;
                 }
+
+                // #Chat-title {
+                //     position: absolute;
+                //     top: 115px;
+                //     left: 200px;
+                //     width: 120px;
+                // }
 
                 /* 只是为了可视化，你可以根据需要修改 */
                 // .linechart {
@@ -764,6 +805,13 @@ body,
             /* 下半部分颜色，用于可视化 */
             // margin-top: 4px;
             /* 上下部分的间隔 */
+            #Chart-title {
+                font-size: 17px;
+                font-weight: bolder;
+                margin-top: 5px; // position: absolute;
+                margin-left: 50px;
+            }
+
             .linechart {
                 margin-left: 40px;
             }
